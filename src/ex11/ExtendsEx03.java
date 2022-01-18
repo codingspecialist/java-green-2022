@@ -29,6 +29,7 @@ class 강아지 extends 애완동물 {
 class 고양이 extends 애완동물 {
 
     String name = "고양이";
+    int hp = 100;
 
     void printName() {
         System.out.println(name);
