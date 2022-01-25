@@ -1,11 +1,15 @@
 {
     "java.project.sourcePaths": ["src"],
     "java.project.outputPath": "bin",
-    "java.project.referencedLibraries": [
-        "lib/**/*.jar",
-        "c:\\green_workspace\\downloads\\javaSDK-2.2.jar",
-        "c:\\green_workspace\\downloads\\json-simple-1.1.1.jar",
-        "c:\\green_workspace\\downloads\\gson-2.8.5.jar",
-        "c:\\green_workspace\\downloads\\lombok-1.18.22.jar"
-    ]
+    "java.project.referencedLibraries": {
+        "include": [
+            "lib/**/*.jar",
+            "c:\\green_workspace\\downloads\\javaSDK-2.2.jar",
+            "c:\\green_workspace\\downloads\\json-simple-1.1.1.jar",
+            "c:\\green_workspace\\downloads\\lombok-1.18.22.jar"
+        ],
+        "exclude": [
+            "c:\\green_workspace\\downloads\\gson-2.8.5.jar"
+        ]
+    }
 }
