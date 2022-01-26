@@ -8,13 +8,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
-
-import datatest.FlightDto.Response.Body.Items.Item;
+import com.google.gson.reflect.TypeToken;
 
 public class DownloadFlight {
     // 특정 날짜에 특정 출발지에서 특정 목적지로 도착하는 항공편 정보 가져오는 메서드
     // DownloadFlight.getFlightList("20220126", "제주", "김해");
-    public static List<Item> getFlightList(
+    public static List<FlightItem> getFlightList(
             String depPlandTime,
             String depAirportNm,
             String arrAirportNm) {
@@ -37,11 +36,20 @@ public class DownloadFlight {
 
             String responseJson = br.readLine();
             Gson gson = new Gson();
-            FlightDto dto = gson.fromJson(responseJson, FlightDto.class);
-            List<Item> result = dto.getResponse().getBody().getItems().getItem();
+
+            System.out.println(responseJson);
+            ResponseDto<FlightItem> dto = gson.fromJson(responseJson,
+                    TypeToken.getParameterized(ResponseDto.class, FlightItem.class).getType());
+
+            if (dto.getResponse().getBody().getTotalCount() == 0) {
+                System.out.println("응답코드 : " + dto.getResponse().getHeader().getResultCode());
+                System.out.println("Flight 항공편이 0건입니다.");
+            }
+
+            List<FlightItem> result = dto.getResponse().getBody().getItems().getItem();
             return result;
         } catch (Exception e) {
-            System.out.println("항공편 조회중 오류가 발생했습니다.");
+            System.out.println("항공편 조회중 오류가 발생했습니다." + e.getMessage());
         }
         return null;
     }

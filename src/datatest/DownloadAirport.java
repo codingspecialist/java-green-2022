@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.Gson;
-
-import datatest.AirportDto.Response.Body.Items.Item;
+import com.google.gson.reflect.TypeToken;
 
 public class DownloadAirport {
 
@@ -30,15 +29,25 @@ public class DownloadAirport {
                     new InputStreamReader(conn.getInputStream(), "utf-8"));
 
             String responseJson = br.readLine();
+            System.out.println(responseJson);
+
             Gson gson = new Gson();
-            AirportDto dto = gson.fromJson(responseJson, AirportDto.class);
-            List<Item> result = dto.getResponse().getBody().getItems().getItem();
+            ResponseDto<AirportItem> dto = gson.fromJson(responseJson,
+                    TypeToken.getParameterized(ResponseDto.class, AirportItem.class).getType());
+
+            if (dto.getResponse().getBody().getTotalCount() == 0) {
+                System.out.println("응답코드 : " + dto.getResponse().getHeader().getResultCode());
+                System.out.println("Airport 목록이 0건입니다.");
+            }
+
+            List<AirportItem> result = dto.getResponse().getBody().getItems().getItem();
 
             for (int i = 0; i < result.size(); i++) {
                 airportMap.put(result.get(i).getAirportNm(), result.get(i).getAirportId());
             }
         } catch (Exception e) {
-            System.out.println("공항목록 조회중 오류가 발생했습니다.");
+            System.out.println("공항목록 조회중 오류가 발생했습니다." + e.getMessage());
+            e.printStackTrace();
         }
         return airportMap;
     }

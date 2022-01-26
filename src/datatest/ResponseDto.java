@@ -7,7 +7,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class FlightDto {
+public class ResponseDto<T> {
     private Response response; // 변수명을 꼭 동일하게!!
 
     @AllArgsConstructor
@@ -37,21 +37,7 @@ public class FlightDto {
             @AllArgsConstructor
             @Data
             class Items {
-
-                private List<Item> item;
-
-                @AllArgsConstructor
-                @Data
-                class Item {
-                    private String airlineNm;
-                    private String arrAirportNm;
-                    private String arrPlandTime;
-                    private String depAirportNm;
-                    private String depPlandTime;
-                    private int economyCharge;
-                    private int prestigeCharge;
-                    private String vihicleId;
-                }
+                private List<T> item;
             }
         }
     }
